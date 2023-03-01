@@ -1,0 +1,19 @@
+.square {
+    height: 100px;
+    width: 100px;
+    background-color: #0080ff/*#ba8c63*/;
+    border-width: 2px;
+    border-color: white;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2vw;
+}
+
+.blank {
+    height: 100px;
+    width: 100px;
+    background-color: transparent;
+    color: transparent;
+}
