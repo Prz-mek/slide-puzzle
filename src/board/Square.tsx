@@ -4,6 +4,7 @@ interface ISquareProps {
     index: number
     onClick: () => void
     isBlank: boolean
+    size: number
 }
 
 function Square({index, onClick, isBlank}: ISquareProps) {

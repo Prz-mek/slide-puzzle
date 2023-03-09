@@ -10,7 +10,7 @@ function WinModal({isOpen, onClose}: IWinModalProps) {
 
     return isOpen ? createPortal(
         <div className='container'>
-            <h3>YOU WON!</h3>
+            <h3>VICTORY!</h3>
             <p>Congratulations!</p>
             <button onClick={onClose}>OK</button>
         </div>,

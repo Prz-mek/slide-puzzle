@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <h1>Slide puzzle</h1>
-      <div>
+      <div style={{padding: '20px'}}>
         <button onClick={() => setSide(3)}>3</button>
         <button onClick={() => setSide(4)}>4</button>
         <button onClick={() => setSide(5)}>5</button>

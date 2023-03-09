@@ -1,15 +1,17 @@
 .container {
-    background-color:aqua;
-    border-width: 4px;
-    border-color: blue;
+    background-color: rgba(15, 15, 15, 0.92);;
+    border: 4px solid;
+    border-color: white;
     border-radius: 10px;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
-}
-
-.button {
-    background-color: chartreuse;
+    padding: 20px 50px;
+    max-width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
 }

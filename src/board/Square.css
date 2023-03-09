@@ -1,7 +1,5 @@
 .square {
-    height: 100px;
-    width: 100px;
-    background-color: #0080ff/*#ba8c63*/;
+    background-color: #0080ff;
     border-width: 2px;
     border-color: white;
     color: white;
@@ -12,8 +10,6 @@
 }
 
 .blank {
-    height: 100px;
-    width: 100px;
     background-color: transparent;
     color: transparent;
 }

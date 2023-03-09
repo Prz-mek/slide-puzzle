@@ -108,15 +108,18 @@ function Board({ N }: IBoardProps) {
         }
     }
 
+    const squareSideLength = 100 * 3 / N + 0.15 * (N - 3) * 50;
+
     return (
         <>
-            <div className="board" style={{ gridTemplateColumns: `repeat(${N}, 1fr)` }}>
+            <div className="board" style={{ gridTemplateColumns: `repeat(${N}, ${squareSideLength}px)`, gridTemplateRows: `repeat(${N}, ${squareSideLength}px)` }}>
                 {
-                    squareIndices.map((i: number, position: number) => (<Square key={position} index={i} onClick={() => makeMove(i)} isBlank={i === N * N} />))
+                    squareIndices.map((i: number, position: number) => (<Square key={position} index={i} size={200 * 3 / N} onClick={() => makeMove(i)} isBlank={i === N * N} />))
                 }
             </div>
-            <button onClick={suffle}>Suffle</button>
-            <button onClick={() => console.log("Not implemented")}>Solve</button>
+            <div style={{padding: '20px'}}>
+                <button onClick={suffle}>Suffle</button>
+            </div>
             <WinModal isOpen={isWinModalOpen} onClose={() => setIsWinModalOpen(false) } />
         </>
 
