@@ -1,19 +1,26 @@
 import { useEffect, useState } from "react"
 import Square from "./Square"
 import './Board.css'
-import WinModal from "../modal/WinModal";
+import WinModal from "../modal/WinModal"
 
 interface IBoardProps {
-    N: number
+    N: number;
+}
+
+interface ITimeMesurement {
+    startTime: number | null;
+    gameTime: number | null;
 }
 
 function Board({ N }: IBoardProps) {
-    const [isGame, setIsGame] = useState(false)
-    const [isWinModalOpen, setIsWinModalOpen] = useState(false)
-    const [squareIndices, setSquareIndices] = useState(Array.from({ length: N * N }, (_, i) => i + 1))
+    const [isGame, setIsGame] = useState(false);
+    const [isWinModalOpen, setIsWinModalOpen] = useState(false);
+    const [squareIndices, setSquareIndices] = useState(Array.from({ length: N * N }, (_, i) => i + 1));
+    const [time, setTime] = useState<ITimeMesurement>({ startTime: null, gameTime: null});
 
     useEffect(() => {
-        setSquareIndices(Array.from({ length: N * N }, (_, i) => i + 1))
+        setSquareIndices(Array.from({ length: N * N }, (_, i) => i + 1));
+        setIsGame(false);
     }, [N])
 
 
@@ -31,35 +38,36 @@ function Board({ N }: IBoardProps) {
             var inversions = 0;
             for (let j = i + 1; j < array.length; j++) {
                 if (array[j] !== N*N && array[i] !== N*N && array[j] < index) {
-                    inversions++
+                    inversions++;
                 }
             }
-            total += inversions
+            total += inversions;
         });
-        return total
+        return total;
     }
 
     function isSolvable(board: number[]): boolean {
         if (N % 2 === 1) {
-            return countInversions(board) % 2 === 0
+            return countInversions(board) % 2 === 0;
         } else {
             const positionFromBottom = N - Math.floor(board.indexOf(N*N) / N)
             if (positionFromBottom % 2 === 1) {
-                return countInversions(board) % 2 === 0
+                return countInversions(board) % 2 === 0;
             } else {
-                return countInversions(board) % 2 === 1
+                return countInversions(board) % 2 === 1;
             }
         }
     }
 
     function suffle(): void {
-        let newSquareIndices = [...squareIndices]
+        let newSquareIndices = [...squareIndices];
         do {
-            fisherYatesSuffle(newSquareIndices)
+            fisherYatesSuffle(newSquareIndices);
         } while (!isSolvable(newSquareIndices))
-        setSquareIndices(newSquareIndices)
-        setIsGame(true)
-        setIsWinModalOpen(false)
+        setSquareIndices(newSquareIndices);
+        setIsGame(true);
+        setIsWinModalOpen(false);
+        setTime({...time, startTime: performance.now()});
     }
 
     function checkWin(board: number[]): boolean {
@@ -72,10 +80,10 @@ function Board({ N }: IBoardProps) {
     }
 
     function isValidMove(i1: number, i2: number): boolean {
-        const x1 = i1 % N
-        const y1 = Math.floor(i1 / N)
-        const x2 = i2 % N
-        const y2 = Math.floor(i2 / N)
+        const x1 = i1 % N;
+        const y1 = Math.floor(i1 / N);
+        const x2 = i2 % N;
+        const y2 = Math.floor(i2 / N);
 
         if (x1 === x2 && Math.abs(y1 - y2) === 1) {
             return true;
@@ -88,21 +96,32 @@ function Board({ N }: IBoardProps) {
         return false;
     }
 
+    function calculateTime() {
+        if (! time.startTime) {
+            console.warn('No start time');
+            return;
+        }
+        const endTime = performance.now();
+        const gameTime = endTime - time.startTime;
+        setTime({ ...time, gameTime: gameTime });
+    }
+
     function makeMove(index: number): void {
         if (!isGame) {
-            return
+            return;
         }
 
         let blackPosition = squareIndices.indexOf(N * N);
-        let chosenPosition = squareIndices.indexOf(index)
+        let chosenPosition = squareIndices.indexOf(index);
         if (isValidMove(blackPosition, chosenPosition)) {
-            let newSquareIndices = [...squareIndices]
+            let newSquareIndices = [...squareIndices];
             newSquareIndices[blackPosition] = index;
             newSquareIndices[chosenPosition] = N * N;
-            setSquareIndices(newSquareIndices)
+            setSquareIndices(newSquareIndices);
 
             if (checkWin(newSquareIndices)) {
                 setIsGame(false);
+                calculateTime();
                 setIsWinModalOpen(true);
             }
         }
@@ -120,7 +139,7 @@ function Board({ N }: IBoardProps) {
             <div style={{padding: '20px'}}>
                 <button onClick={suffle}>Suffle</button>
             </div>
-            <WinModal isOpen={isWinModalOpen} onClose={() => setIsWinModalOpen(false) } />
+            <WinModal time={time.gameTime } isOpen={isWinModalOpen} onClose={() => setIsWinModalOpen(false) } />
         </>
 
     )
